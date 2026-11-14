@@ -1,0 +1,14 @@
+{
+  "expo": {
+    "name": "Nexora One",
+    "slug": "nexora-one",
+    "scheme": "nexoraone",
+    "version": "0.1.0",
+    "orientation": "default",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "web": { "bundler": "metro" },
+    "plugins": ["expo-router"],
+    "experiments": { "typedRoutes": true }
+  }
+}
