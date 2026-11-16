@@ -7,6 +7,9 @@
 - [x] Supabase client placeholder
 - [x] Initial database migration and security notes
 
+## Current implementation note
+The first responsive dashboard preview is now committed in `app/index.tsx`. It uses sample figures and activity solely to demonstrate the intended interface; it is not connected to Supabase and its navigation is not functional yet. The app has not yet been installed, typechecked, or run on web/Android. Do not treat this preview as a completed Milestone 1.
+
 ## Milestone 1 — App foundation
 - [ ] Install dependencies and run web/Android development builds
 - [ ] Add linting, formatting and typecheck to CI
