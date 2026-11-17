@@ -1,4 +1,4 @@
-import { useMemo, useRef } from "react";
+import { useMemo, useRef, type MutableRefObject } from "react";
 import { Link } from "expo-router";
 import { ScrollView, StyleSheet, Text, View, Pressable, useWindowDimensions } from "react-native";
 import { Canvas, useFrame } from "@react-three/fiber";
@@ -9,7 +9,7 @@ const ink = "#152238";
 const muted = "#64748B";
 const red = "#A7193B";
 
-function Chain({ progress }: { progress: React.MutableRefObject<number> }) {
+function Chain({ progress }: { progress: MutableRefObject<number> }) {
   const links = useRef<THREE.Group[]>([]);
   const keyLight = useRef<THREE.PointLight>(null);
   const curve = useMemo(() => new THREE.CatmullRomCurve3([
@@ -87,8 +87,8 @@ export default function LandingPage() {
         </View>
         {!compact ? <View style={styles.navLinks}><Text style={styles.navLink}>Platform</Text><Text style={styles.navLink}>How it works</Text><Text style={styles.navLink}>For teams</Text></View> : null}
         <View style={styles.navActions}>
-          <Link href="/" asChild><Pressable><Text style={styles.signIn}>Sign in</Text></Pressable></Link>
-          <Link href="/" asChild><Pressable style={styles.navButton}><Text style={styles.navButtonText}>Open workspace ↗</Text></Pressable></Link>
+          <Link href="/" asChild><Pressable><Text style={styles.signIn}>Workspace preview</Text></Pressable></Link>
+          <Link href="/" asChild><Pressable style={styles.navButton}><Text style={styles.navButtonText}>Preview workspace ↗</Text></Pressable></Link>
         </View>
       </View>
 
