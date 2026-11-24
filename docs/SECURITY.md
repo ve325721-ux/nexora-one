@@ -25,4 +25,6 @@ This is a prototype baseline, not a certification or a claim of production readi
 8. Session expiry and sign-out work on web and Android.
 
 ## Review notes
-The initial migration is a starting point and must be reviewed and tested in a separate Supabase project. Review SECURITY DEFINER functions, privileges, role escalation paths, and all CRUD policies before any real customer data is used. Client-side route guards are not authorization. Supabase service-role access bypasses RLS.
+The deployed workspace RPCs `create_business`, `accept_business_invitation`, and `create_business_invitation_v2` are SECURITY DEFINER functions. They are executable only by authenticated users (not `anon`) and validate `auth.uid()` plus workspace role/email rules internally. Supabase's security advisor still flags authenticated execution as a warning because these functions intentionally cross RLS boundaries. Review their definitions and keep the role checks covered by automated tests. Client-side route guards are not authorization. Supabase service-role access bypasses RLS.
+
+Authentication and workspace APIs have been added, but they have not yet passed an end-to-end test using separate verified accounts. Configure the Auth redirect allow-list, test signup/confirmation/password recovery on web and Android, and test two independent businesses before any real customer data is used.
