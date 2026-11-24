@@ -1,7 +1,7 @@
 import { Link, useRouter } from "expo-router";
 import { useState } from "react";
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
-import { getSupabaseClient } from "@/lib/supabase";
+import { signInWithEmail } from "@/lib/auth";
 
 export default function SignInScreen() {
   const router = useRouter();
@@ -21,16 +21,7 @@ export default function SignInScreen() {
     setLoading(true);
 
     try {
-      const client = getSupabaseClient();
-      if (!client) {
-        throw new Error("Supabase environment variables are missing.");
-      }
-
-      const { error: authError } = await client.auth.signInWithPassword({ email: email.trim(), password });
-
-      if (authError) {
-        throw new Error(authError.message);
-      }
+      await signInWithEmail({ email, password });
 
       router.replace("/");
     } catch (caughtError) {
@@ -69,6 +60,12 @@ export default function SignInScreen() {
         <Pressable style={[styles.primaryButton, loading && styles.disabled]} onPress={handleSubmit} disabled={loading}>
           {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.primaryButtonText}>Sign in</Text>}
         </Pressable>
+
+        <Link href="/auth/forgot-password" asChild>
+          <Pressable>
+            <Text style={styles.linkText}>Forgot password?</Text>
+          </Pressable>
+        </Link>
 
         <Link href="/auth/sign-up" asChild>
           <Pressable>
