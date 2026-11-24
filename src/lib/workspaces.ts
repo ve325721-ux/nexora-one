@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import type { User } from "@supabase/supabase-js";
+import type { TablesUpdate } from "@/types/database";
 import { getSupabaseClient } from "./supabase";
 
 export type WorkspaceRole = "owner" | "admin" | "manager" | "staff";
@@ -117,7 +118,7 @@ export async function updateWorkspace(
   workspaceId: string,
   updates: Partial<Pick<WorkspaceSummary, "name" | "currency" | "country" | "timezone" | "businessEmail" | "logoUrl">>,
 ): Promise<void> {
-  const payload: Record<string, string | null> = {};
+  const payload: TablesUpdate<"businesses"> = {};
   if (updates.name !== undefined) payload.name = updates.name.trim();
   if (updates.currency !== undefined) payload.currency = updates.currency.trim().toUpperCase();
   if (updates.country !== undefined) payload.country = updates.country.trim().toUpperCase();
