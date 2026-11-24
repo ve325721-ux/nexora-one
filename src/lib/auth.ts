@@ -1,13 +1,14 @@
 import { getSupabaseClient } from "./supabase";
 import type { Session, User } from "@supabase/supabase-js";
 
-export type AuthCredentials = {
-  email: string;
-  password: string;
-};
+export type AuthCredentials = { email: string; password: string };
 
 function normalizeEmail(email: string) {
   return email.trim().toLowerCase();
+}
+
+function authRedirectUrl() {
+  return process.env.EXPO_PUBLIC_AUTH_REDIRECT_URL || undefined;
 }
 
 export async function signUpWithEmail({
@@ -20,6 +21,7 @@ export async function signUpWithEmail({
     email: normalizeEmail(email),
     password,
     options: {
+      emailRedirectTo: authRedirectUrl(),
       data: fullName?.trim() ? { full_name: fullName.trim() } : undefined,
     },
   });
@@ -55,14 +57,15 @@ export async function getCurrentSession(): Promise<Session | null> {
   const { data, error } = await supabase.auth.getSession();
   if (error) throw new Error(error.message);
   if (!data.session) return null;
-
   const { data: verified, error: userError } = await supabase.auth.getUser();
   if (userError || !verified.user) return null;
   return data.session;
 }
 
 export async function requestPasswordReset(email: string): Promise<void> {
-  const { error } = await getSupabaseClient().auth.resetPasswordForEmail(normalizeEmail(email));
+  const { error } = await getSupabaseClient().auth.resetPasswordForEmail(normalizeEmail(email), {
+    redirectTo: authRedirectUrl(),
+  });
   if (error) throw new Error(error.message);
 }
 
