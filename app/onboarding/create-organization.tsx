@@ -1,12 +1,11 @@
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
-import { createOrganization, slugify } from "@/lib/organizations";
+import { createOrganization } from "@/lib/organizations";
 
 export default function CreateOrganizationScreen() {
   const router = useRouter();
   const [name, setName] = useState("");
-  const [slug, setSlug] = useState("");
   const [currency, setCurrency] = useState("USD");
   const [email, setEmail] = useState("");
   const [country, setCountry] = useState("US");
@@ -14,12 +13,6 @@ export default function CreateOrganizationScreen() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  function updateSlugFromName(value: string) {
-    setName(value);
-    if (!slug.trim()) {
-      setSlug(slugify(value));
-    }
-  }
 
   async function handleSubmit() {
     setError("");
@@ -29,17 +22,11 @@ export default function CreateOrganizationScreen() {
       return;
     }
 
-    if (!slug.trim()) {
-      setError("Business slug is required.");
-      return;
-    }
-
     setLoading(true);
 
     try {
       await createOrganization({
         name: name.trim(),
-        slug: slug.trim(),
         currency: currency.trim().toUpperCase() || "USD",
         country: country.trim().toUpperCase() || "US",
         timeZone: timeZone.trim() || "UTC",
@@ -60,8 +47,7 @@ export default function CreateOrganizationScreen() {
         <Text style={styles.title}>Create your first business</Text>
         <Text style={styles.subtitle}>Set up your organization and start managing customer work.</Text>
 
-        <TextInput placeholder="Business name" value={name} onChangeText={updateSlugFromName} style={styles.input} />
-        <TextInput placeholder="Business slug" value={slug} onChangeText={setSlug} style={styles.input} />
+        <TextInput placeholder="Business name" value={name} onChangeText={setName} style={styles.input} />
         <TextInput placeholder="Currency (USD)" value={currency} onChangeText={setCurrency} autoCapitalize="characters" style={styles.input} />
         <TextInput placeholder="Country (US)" value={country} onChangeText={setCountry} autoCapitalize="characters" style={styles.input} />
         <TextInput placeholder="Time zone (UTC)" value={timeZone} onChangeText={setTimeZone} style={styles.input} />
