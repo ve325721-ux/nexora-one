@@ -35,7 +35,7 @@ export default function AuthCallbackScreen() {
 
         if (!cancelled) {
           setMessage("Verified. Opening Nexora One...");
-          router.replace("/");
+          router.replace(params.type === "recovery" ? "/auth/update-password" : "/");
         }
       } catch (error) {
         if (!cancelled) setMessage(error instanceof Error ? error.message : "Unable to verify this link.");
